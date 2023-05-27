@@ -1,0 +1,178 @@
+import tkinter as tk
+import os
+import shutil
+from PIL import Image, ImageDraw, ImageFont, ImageTk
+import pandas as pd
+
+def fashi():
+    df = pd.read_excel('fashi_List.xlsx')
+    date = '癸卯年四月吉日'
+
+    for i in range(len(df)):
+        name = df.iloc[i]['name']
+        birthday = df.iloc[i]['birth']
+        location = df.iloc[i]['location']
+        task = df.iloc[i]['task']
+
+        # 根据task的值进行判断并选择对应的图片和绘制位置
+        if '东岳' in str(task):
+            image_path = 'base/dongyue.png'
+            x_name, y_name = 531 * 5, 176 * 5
+            x_bir, y_bir = 535 * 5, 247 * 5
+            x_loc, y_loc = 578 * 5, 204 * 5
+            x_loc2, y_loc2 = 557 * 5, 118 * 5
+            x_date, y_date = 88 * 5, 130 * 5
+            fontlow = ImageFont.truetype('assets/font.ttf', size=45)
+            fonthigh = ImageFont.truetype('assets/font.ttf', size=60)
+            y_space_low = 50
+            y_space_high = 60
+        elif '三元' in str(task):
+            image_path = 'base/sanguan.png'
+            x_name, y_name = 533 * 5, 175 * 5
+            x_bir, y_bir = 533 * 5, 247 * 5
+            x_loc, y_loc = 578 * 5, 204 * 5
+            x_loc2, y_loc2 = 557 * 5, 123 * 5
+            x_date, y_date = 88 * 5, 130 * 5
+            fontlow = ImageFont.truetype('assets/font.ttf', size=45)
+            fonthigh = ImageFont.truetype('assets/font.ttf', size=60)
+            y_space_low = 45
+            y_space_high = 60
+        elif '玉皇' in str(task):
+            image_path = 'base/huangjing.png'
+            x_name, y_name = 501 * 5, 270 * 5
+            x_loc, y_loc = 578 * 5, 207 * 5
+            x_loc2, y_loc2 = 555 * 5, 134 * 5
+            x_date, y_date = 85 * 5, 134 * 5
+            fontlow = ImageFont.truetype('assets/font.ttf', size=50)
+            fonthigh = ImageFont.truetype('assets/font.ttf', size=60)
+            y_space_low = 50
+            y_space_high = 60
+        elif '北斗' in str(task):
+            image_path = 'base/beidou.png'
+            x_name, y_name = 488 * 5, 179 * 5
+            x_bir, y_bir = 488 * 5, 267 * 5
+            x_loc, y_loc = 565 * 5, 191 * 5
+            x_loc2, y_loc2 = 545 * 5, 108 * 5
+            x_date, y_date = 98 * 5, 112 * 5
+            fontlow = ImageFont.truetype('assets/font.ttf', size=50)
+            fonthigh = ImageFont.truetype('assets/font.ttf', size=60)
+            y_space_low = 50
+            y_space_high = 60
+        elif '雷声' in str(task):
+            image_path = 'base/yushu.png'
+            x_name, y_name = 532 * 5, 175 * 5
+            x_bir, y_bir = 532 * 5, 249 * 5
+            x_loc, y_loc = 579 * 5, 204 * 5
+            x_loc2, y_loc2 = 557 * 5, 123 * 5
+            x_date, y_date = 87 * 5, 130 * 5
+            fontlow = ImageFont.truetype('assets/font.ttf', size=45)
+            fonthigh = ImageFont.truetype('assets/font.ttf', size=60)
+            y_space_low = 45
+            y_space_high = 60
+        elif '文昌' in str(task):
+            image_path = 'base/wenchang.png'
+            x_name, y_name = 470 * 5, 231 * 5
+            x_loc, y_loc = 532 * 5, 192 * 5
+            x_loc2, y_loc2 = 511 * 5, 119 * 5
+            x_date, y_date = 74 * 5, 122 * 5
+            fontlow = ImageFont.truetype('assets/font.ttf', size=55)
+            fonthigh = ImageFont.truetype('assets/font.ttf', size=60)
+            y_space_low = 55
+            y_space_high = 60
+        elif '吕祖' in str(task):
+            image_path = 'base/lvzu.png'
+            x_name, y_name = 533 * 5, 175 * 5
+            x_bir, y_bir = 532 * 5, 249 * 5
+            x_loc, y_loc = 579 * 5, 204 * 5
+            x_loc2, y_loc2 = 557 * 5, 123 * 5
+            x_date, y_date = 87 * 5, 128 * 5
+            fontlow = ImageFont.truetype('assets/font.ttf', size=45)
+            fonthigh = ImageFont.truetype('assets/font.ttf', size=60)
+            y_space_low = 45
+            y_space_high = 60
+        elif '财神' in str(task):
+            image_path = 'base/caishen.png'
+            x_name, y_name = 457 * 5, 214 * 5
+            x_bir, y_bir = 457 * 5, 280 * 5
+            x_loc, y_loc = 536 * 5, 203 * 5
+            x_loc2, y_loc2 = 510 * 5, 137 * 5
+            x_date, y_date = 92 * 5, 140 * 5
+            x_towhom, y_towhom = 327 * 5, 178 * 5
+            fontlow = ImageFont.truetype('assets/font.ttf', size=40)
+            fonthigh = ImageFont.truetype('assets/font.ttf', size=50)
+            y_space_low = 40
+            y_space_high = 50
+        else:  # 香签
+            pass
+
+            # 读取图片
+            img = Image.open(image_path)
+            draw = ImageDraw.Draw(img)
+
+            # 绘制 name
+            if len(name) > 3:
+                font = fontlow
+                x = x_name
+                y = y_name
+                y_space = y_space_low
+            else:
+                font = fonthigh
+                x = x_name
+                y = y_name
+                y_space = y_space_high
+            for c in name:
+                draw.text((x, y), c, fill='black', font=font, text_direction='ttb', spacing=60)
+                y += y_space
+
+            # 绘制 birthday
+            x = x_bir
+            y = y_bir
+            for c in str(birthday):
+                draw.text((x, y), c, fill='black', font=fonthigh,
+                          text_direction='ttb', spacing=20 * 5)
+                y += y_space_high
+
+            # 绘制 towhom
+            if '财神' in str(task):
+                x = x_towhom
+                y = y_towhom
+                for c in str(name):
+                    draw.text((x, y), c, fill='black', font=fontlow,
+                              text_direction='ttb', spacing=20 * 5)
+                    y += y_space_low
+
+            # 绘制 location 将 location 字符串分成两段
+            if len(location) > 15:
+                location1 = location[:15]
+                location2 = location[15:]
+            else:
+                location1 = location
+                location2 = ""
+            # 绘制第一段
+            x = x_loc
+            y = y_loc
+            for c in location1:
+                draw.text((x, y), c, fill='black', font=fonthigh, spacing=40)
+                y += y_space_high
+            # 绘制第二段
+            if location2:
+                x = x_loc2
+                y = y_loc2
+                for c in location2:
+                    draw.text((x, y), c, fill='black', font=fonthigh,
+                              spacing=40)
+                    y += y_space_high
+
+            # 绘制落款时间
+            x, y = x_date, y_date
+            for c in date:
+                draw.text((x, y), c, fill='black', font=fonthigh,
+                          text_direction='ttb', spacing=20 * 5)
+                y += y_space_high
+
+            # 生成输出文件路径和文件名
+            dir_path = f"holyBiaowen_images"
+            os.makedirs(dir_path, exist_ok=True)
+            output_filename = f"{dir_path}/{name}{task}.png"
+            # 保存处理后的图像
+            img.save(output_filename)
